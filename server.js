@@ -10,7 +10,7 @@ app.use(express.json());
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const toRadians = degree => degree * (Math.PI / 180);
-    const R = 6371; // Earth's radius in kilometers
+    const R = 6371; 
 
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
@@ -20,12 +20,11 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
               Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
+    return R * c;
 }
 
 
 app.post('/addSchool', async (req, res) => {
-    // 1. Validation Schema
     const schema = Joi.object({
         name: Joi.string().min(3).required(),
         address: Joi.string().min(5).required(),
@@ -62,9 +61,8 @@ app.get('/listSchools', async (req, res) => {
 
         const sortedSchools = schools.map(school => {
             const distance = calculateDistance(userLat, userLon, school.latitude, school.longitude);
-            return { ...school, distance: parseFloat(distance.toFixed(2)) }; // Append distance in km
-        }).sort((a, b) => a.distance - b.distance); // Sort ascending by distance
-
+            return { ...school, distance: parseFloat(distance.toFixed(2)) }; 
+        }).sort((a, b) => a.distance - b.distance); 
         res.status(200).json(sortedSchools);
     } catch (err) {
         console.error(err);
